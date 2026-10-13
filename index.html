@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Liquid Glass Navigation Bar</title>
+  <style>
+    html, body {
+      margin: 0 !important;
+      padding: 0 !important;
+      width: 100% !important;
+      height: 100% !important;
+      background: transparent !important;
+      overflow: hidden;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    /* Main Container with WebKit Mask Clip & Backdrop Blur */
+    .liquid-glass-container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      box-sizing: border-box;
+      border-radius: 28px;
+      overflow: hidden;
+
+      /* CRITICAL ADALO FIX: Forces WebKit/Safari to cleanly clip rendering inside the border-radius */
+      -webkit-mask-image: -webkit-radial-gradient(white, black);
+
+      /* Native High-Performance Backdrop Blur & Saturation */
+      backdrop-filter: blur(25px) saturate(200%);
+      -webkit-backdrop-filter: blur(25px) saturate(200%);
+
+      /* Soft ambient base glow */
+      background: rgba(255, 255, 255, 0.08);
+
+      /* Outer edge definition and drop shadow */
+      box-shadow: 
+        0 10px 30px rgba(0, 0, 0, 0.25),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.15);
+    }
+
+    /* Glass Overlay Tint Gradient */
+    .glass-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.22) 0%,
+        rgba(255, 255, 255, 0.05) 50%,
+        rgba(255, 255, 255, 0.12) 100%
+      );
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Specular Inner Rim Highlights (Top sheen & bottom bounce light) */
+    .glass-specular {
+      position: absolute;
+      inset: 0;
+      border-radius: 28px;
+      box-shadow: 
+        inset 0 1.5px 2px 0 rgba(255, 255, 255, 0.6),
+        inset 0 -1px 2px 0 rgba(255, 255, 255, 0.25);
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    /* Content Layout Wrapper */
+    .glass-content {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      padding: 0 12px;
+      box-sizing: border-box;
+      z-index: 2;
+    }
+
+    /* Individual Navigation Items */
+    .glass-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255, 255, 255, 0.65);
+      font-size: 11px;
+      font-weight: 500;
+      cursor: pointer;
+      padding: 6px 10px;
+      border-radius: 16px;
+      transition: color 0.2s ease, background 0.2s ease, transform 0.15s ease;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+
+    .glass-item svg {
+      fill: currentColor;
+      margin-bottom: 4px;
+      transition: fill 0.2s ease;
+    }
+
+    /* Active State */
+    .glass-item--active {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.15);
+      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.3);
+    }
+
+    .glass-item:hover {
+      color: #ffffff;
+    }
+
+    .glass-item:active {
+      transform: scale(0.94);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="liquid-glass-container">
+    <div class="glass-overlay"></div>
+    <div class="glass-specular"></div>
+    
+    <div class="glass-content">
+      <div class="glass-item glass-item--active" onclick="selectTab(this)">
+        <svg viewBox="0 0 576 512" width="22" title="home">
+          <path d="M280.37 148.26L96 300.11V464a16 16 0 0 0 16 16l112.06-.29a16 16 0 0 0 15.92-16V368a16 16 0 0 1 16-16h64a16 16 0 0 1 16 16v95.64a16 16 0 0 0 16 16.05L464 480a16 16 0 0 0 16-16V300L295.67 148.26a12.19 12.19 0 0 0-15.3 0zM571.6 251.47L488 182.56V44.05a12 12 0 0 0-12-12h-56a12 12 0 0 0-12 12v72.61L318.47 43a48 48 0 0 0-61 0L4.34 251.47a12 12 0 0 0-1.6 16.9l25.5 31A12 12 0 0 0 45.15 301l235.22-193.74a12.19 12.19 0 0 1 15.3 0L530.9 301a12 12 0 0 0 16.9-1.6l25.5-31a12 12 0 0 0-1.7-16.93z" />
+        </svg>
+        Home
+      </div>
+      
+      <div class="glass-item" onclick="selectTab(this)">
+        <svg viewBox="0 0 512 512" width="18" title="layer-group">
+          <path d="M12.41 148.02l232.94 105.67c6.8 3.09 14.49 3.09 21.29 0l232.94-105.67c16.55-7.51 16.55-32.52 0-40.03L266.65 2.31a25.607 25.607 0 0 0-21.29 0L12.41 107.98c-16.55 7.51-16.55 32.53 0 40.04zm487.18 88.28l-58.09-26.33-161.64 73.27c-7.56 3.43-15.59 5.17-23.86 5.17s-16.29-1.74-23.86-5.17L70.51 209.97l-58.1 26.33c-16.55 7.5-16.55 32.5 0 40l232.94 105.59c6.8 3.08 14.49 3.08 21.29 0L499.59 276.3c16.55-7.5 16.55-32.5 0-40zm0 127.8l-57.87-26.23-161.86 73.37c-7.56 3.43-15.59 5.17-23.86 5.17s-16.29-1.74-23.86-5.17L70.29 337.87 12.41 364.1c-16.55 7.5-16.55 32.5 0 40l232.94 105.59c6.8 3.08 14.49 3.08 21.29 0L499.59 404.1c16.55-7.5 16.55-32.5 0-40z" />
+        </svg>
+        New
+      </div>
+      
+      <div class="glass-item" onclick="selectTab(this)">
+        <svg viewBox="0 0 640 512" width="22" title="wifi">
+          <path d="M634.91 154.88C457.74-8.99 182.19-8.93 5.09 154.88c-6.66 6.16-6.79 16.59-.35 22.98l34.24 33.97c6.14 6.1 16.02 6.23 22.4.38 145.92-133.68 371.3-133.71 517.25 0 6.38 5.85 16.26 5.71 22.4-.38l34.24-33.97c6.43-6.39 6.3-16.82-.36-22.98zM320 352c-35.35 0-64 28.65-64 64s28.65 64 64 64 64-28.65 64-64-28.65-64-64-64zm202.67-83.59c-115.26-101.93-290.21-101.82-405.34 0-6.9 6.1-7.12 16.69-.57 23.15l34.44 33.99c6 5.92 15.66 6.32 22.05.8 83.95-72.57 209.74-72.41 293.49 0 6.39 5.52 16.05 5.13 22.05-.8l34.44-33.99c6.56-6.46 6.33-17.06-.56-23.15z" />
+        </svg>
+        Wifi
+      </div>
+      
+      <div class="glass-item" onclick="selectTab(this)">
+        <svg viewBox="0 0 512 512" width="18" title="music">
+          <path d="M470.38 1.51L150.41 96A32 32 0 0 0 128 126.51v261.41A139 139 0 0 0 96 384c-53 0-96 28.66-96 64s43 64 96 64 96-28.66 96-64V214.32l256-75v184.61a138.4 138.4 0 0 0-32-3.93c-53 0-96 28.66-96 64s43 64 96 64 96-28.65 96-64V32a32 32 0 0 0-41.62-30.49z" />
+        </svg>
+        Library
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function selectTab(element) {
+      // Remove active class from all items
+      const items = document.querySelectorAll('.glass-item');
+      items.forEach(item => item.classList.remove('glass-item--active'));
+      
+      // Add active class to clicked item
+      element.classList.add('glass-item--active');
+    }
+  </script>
+
+</body>
+</html>
